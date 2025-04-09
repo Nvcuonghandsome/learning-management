@@ -61,6 +61,10 @@ model Chapter {
   title       String
   content     String
   comments    Comment[]
+  videoLength    Int?
+  videoType      String?
+  videoUniqueId  String?
+  videoUrl       String?
   video       String?
   section     Section   @relation(fields: [sectionId], references: [sectionId])
   sectionId   String

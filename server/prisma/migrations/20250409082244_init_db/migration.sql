@@ -56,6 +56,10 @@ CREATE TABLE "chapters" (
     "type" "ChapterType" NOT NULL,
     "title" TEXT NOT NULL,
     "content" TEXT NOT NULL,
+    "videoLength" INTEGER,
+    "videoType" TEXT,
+    "videoUniqueId" TEXT,
+    "videoUrl" TEXT,
     "video" TEXT,
     "sectionId" TEXT NOT NULL,
 
