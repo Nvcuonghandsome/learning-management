@@ -1,0 +1,165 @@
+// Run "npx prisma migrate dev" to import structure change to DB
+// Run "npx prisma generate" to generate prisma client model interface
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  userId    String      @id @default(uuid())
+  email     String @unique
+  name String
+  hash      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  Transaction Transaction[]
+  UserCourseProgress UserCourseProgress[]
+
+  @@map("users")
+}
+
+model Course {
+  courseId     String       @id @default(uuid())
+  teacherId    String
+  teacherName  String
+  title        String
+  description  String?
+  category     String
+  image        String?
+  price        Float?
+  level        CourseLevel
+  status       CourseStatus
+  sections     Section[]
+  enrollments  Enrollment[]
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  Transaction Transaction[]
+  UserCourseProgress UserCourseProgress[]
+
+  @@map("courses")
+}
+
+model Section {
+  sectionId          String    @id @default(uuid())
+  sectionTitle       String
+  sectionDescription String?
+  chapters           Chapter[]
+  course             Course    @relation(fields: [courseId], references: [courseId])
+  courseId           String
+
+  @@map("sections")
+}
+
+model Chapter {
+  chapterId   String    @id @default(uuid())
+  type        ChapterType
+  title       String
+  content     String
+  comments    Comment[]
+  video       String?
+  section     Section   @relation(fields: [sectionId], references: [sectionId])
+  sectionId   String
+
+  @@map("chapters")
+}
+
+model Comment {
+  commentId   String    @id @default(uuid())
+  userId      String
+  text        String
+  timestamp   String
+  chapter     Chapter   @relation(fields: [chapterId], references: [chapterId])
+  chapterId   String
+
+  @@map("comments")
+}
+
+model Enrollment {
+  id        String     @id @default(uuid())
+  userId    String
+  course    Course     @relation(fields: [courseId], references: [courseId])
+  courseId  String
+
+  @@map("enrollments")
+}
+
+enum CourseLevel {
+  Beginner
+  Intermediate
+  Advanced
+}
+
+enum CourseStatus {
+  Draft
+  Published
+}
+
+enum ChapterType {
+  Text
+  Quiz
+  Video
+}
+
+// Transaction 
+model Transaction {
+  transactionId   String   @id @default(uuid())
+  userId          String
+  dateTime        String
+  courseId        String
+  paymentProvider PaymentProvider
+  amount          Float?
+
+  course          Course   @relation(fields: [courseId], references: [courseId])
+  user            User    @relation(fields: [userId], references: [userId])
+
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@index([courseId], name: "CourseTransactionsIndex")
+  @@map("transactions")
+}
+
+enum PaymentProvider {
+  stripe
+}
+
+// Progress
+model UserCourseProgress {
+  id                    String    @id @default(uuid())
+  userId                String
+  courseId              String
+  enrollmentDate        String
+  overallProgress       Float
+  lastAccessedTimestamp String
+
+  sections              SectionProgress[]
+
+  user                  User     @relation(fields: [userId], references: [userId])
+  course                Course    @relation(fields: [courseId], references: [courseId])
+
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+
+  @@unique([userId, courseId])
+}
+
+model SectionProgress {
+  id                  String   @id @default(uuid())
+  sectionId           String
+  userCourseProgress  UserCourseProgress @relation(fields: [userCourseProgressId], references: [id])
+  userCourseProgressId String
+
+  chapters            ChapterProgress[]
+}
+
+model ChapterProgress {
+  chapterId        String   @id @default(uuid())
+  completed        Boolean
+  sectionProgress  SectionProgress @relation(fields: [sectionProgressId], references: [id])
+  sectionProgressId String
+}
