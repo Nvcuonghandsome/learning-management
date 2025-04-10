@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -25,7 +25,7 @@ body,
   --radius: 8px;
 }
 
-input[type="color"] {
+input[type='color'] {
   appearance: none;
   -moz-appearance: none;
   -webkit-appearance: none;
@@ -37,14 +37,14 @@ input[type="color"] {
 
 @layer base {
   :root {
-    --sidebar-background: theme("colors.customgreys.primarybg");
-    --sidebar-foreground: theme("colors.white.50");
-    --sidebar-primary: theme("colors.primary.700");
-    --sidebar-primary-foreground: theme("colors.white.50");
-    --sidebar-accent: theme("colors.customgreys.darkerGrey");
-    --sidebar-accent-foreground: theme("colors.customgreys.dirtyGrey");
-    --sidebar-border: theme("colors.customgreys.secondarybg");
-    --sidebar-ring: theme("colors.primary.700");
+    --sidebar-background: theme('colors.customgreys.primarybg');
+    --sidebar-foreground: theme('colors.white.50');
+    --sidebar-primary: theme('colors.primary.700');
+    --sidebar-primary-foreground: theme('colors.white.50');
+    --sidebar-accent: theme('colors.customgreys.darkerGrey');
+    --sidebar-accent-foreground: theme('colors.customgreys.dirtyGrey');
+    --sidebar-border: theme('colors.customgreys.secondarybg');
+    --sidebar-ring: theme('colors.primary.700');
     --popover: 0 0% 100%;
     --popover-foreground: 0 0% 3.9%;
 
@@ -79,14 +79,14 @@ input[type="color"] {
   }
 
   .dark {
-    --sidebar-background: theme("colors.customgreys.primarybg");
-    --sidebar-foreground: theme("colors.white.50");
-    --sidebar-primary: theme("colors.primary.700");
-    --sidebar-primary-foreground: theme("colors.white.50");
-    --sidebar-accent: theme("colors.customgreys.darkerGrey");
-    --sidebar-accent-foreground: theme("colors.customgreys.dirtyGrey");
-    --sidebar-border: theme("colors.customgreys.secondarybg");
-    --sidebar-ring: theme("colors.primary.700");
+    --sidebar-background: theme('colors.customgreys.primarybg');
+    --sidebar-foreground: theme('colors.white.50');
+    --sidebar-primary: theme('colors.primary.700');
+    --sidebar-primary-foreground: theme('colors.white.50');
+    --sidebar-accent: theme('colors.customgreys.darkerGrey');
+    --sidebar-accent-foreground: theme('colors.customgreys.dirtyGrey');
+    --sidebar-border: theme('colors.customgreys.secondarybg');
+    --sidebar-ring: theme('colors.primary.700');
     --popover: 0 0% 3.9%;
     --popover-foreground: 0 0% 98%;
 
@@ -144,7 +144,8 @@ input[type="color"] {
 
 /* Search Page */
 .search {
-  @apply flex flex-col bg-background text-foreground h-full mx-auto w-3/4;
+  @apply flex flex-col h-full mx-auto w-3/4;
+  /* @apply flex flex-col bg-background text-foreground h-full mx-auto w-3/4; */
 }
 
 .search__title {
@@ -1510,7 +1511,7 @@ input[type="color"] {
 }
 
 /* Add this class for group hover effect */
-[data-collapsible="icon"] .group:hover .app-sidebar__logo {
+[data-collapsible='icon'] .group:hover .app-sidebar__logo {
   @apply brightness-75;
 }
 
@@ -1550,8 +1551,6 @@ input[type="color"] {
 .dashboard-navbar__sidebar-trigger {
   @apply text-customgreys-dirtyGrey hover:text-white-50 transition-colors;
 }
-
-
 
 @layer base {
   * {
