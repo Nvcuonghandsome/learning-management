@@ -3,8 +3,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
-import Image from 'next/image';
-import { useCarousel } from '@/hooks/useCarousel';
+import LandingHero from './LandingHero';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useGetCoursesQuery } from '@/state/api';
 import { useRouter } from 'next/navigation';
@@ -45,8 +44,8 @@ const LoadingSkeleton = () => {
 
 const Landing = () => {
   const router = useRouter();
-  const currentImage = useCarousel({ totalImages: 3 });
-  const { data: courses, isLoading, isError } = useGetCoursesQuery({});
+
+  const { data: courses, isLoading } = useGetCoursesQuery({});
 
   const handleCourseClick = (courseId: string) => {
     router.push(`/search?id=${courseId}`, {
@@ -82,21 +81,7 @@ const Landing = () => {
             </Link>
           </div>
         </div>
-        <div className="landing__hero-images">
-          {['/hero1.jpg', '/hero2.jpg', '/hero3.jpg'].map((src, index) => (
-            <Image
-              key={src}
-              src={src}
-              alt={`Hero Banner ${index + 1}`}
-              fill
-              priority={index === currentImage}
-              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-              className={`landing__hero-image ${
-                index === currentImage ? 'landing__hero-image--active' : ''
-              }`}
-            />
-          ))}
-        </div>
+        <LandingHero />
       </motion.div>
       <motion.div
         initial={{ y: 20, opacity: 0 }}
