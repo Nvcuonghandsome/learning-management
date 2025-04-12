@@ -5,6 +5,7 @@ import WizardStepper from '@/components/WizardStepper';
 import { useCheckoutNavigation } from '@/hooks/useCheckoutNavigation';
 import { useUser } from '@clerk/nextjs';
 import CheckoutDetailsPage from './details';
+import PaymentPage from './payment';
 
 const CheckoutWizard = () => {
   const { isLoaded } = useUser();
@@ -15,10 +16,9 @@ const CheckoutWizard = () => {
   const renderStep = () => {
     switch (checkoutStep) {
       case 1:
-        // http://localhost:3000/checkout?step=1&id=d3abbb57-3abc-472d-a7e4-493492814c79&showSignUp=false
         return <CheckoutDetailsPage />;
       case 2:
-        return 'payment page';
+        return <PaymentPage />;
       case 3:
         return 'completion page';
       default:
