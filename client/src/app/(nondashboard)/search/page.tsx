@@ -31,8 +31,10 @@ const Search = () => {
     router.push(`/search/?id=${course.courseId}`);
   };
 
-  const handleEnrollNow = (course: Course) => {
-    router.push(`/checkout/?step=1&id=${course.courseId}&showSignup=false`);
+  const handleEnrollNow = (courseId: string) => {
+    router.push(`/checkout/?step=1&id=${courseId}&showSignUp=false`, {
+      scroll: false,
+    });
   };
 
   if (isLoading) {
@@ -78,8 +80,7 @@ const Search = () => {
           >
             <SelectedCourse
               course={selectedCourse}
-              handleEnrollNow={() => handleEnrollNow(selectedCourse)}
-              // handleEnrollNow={handleEnrollNow}
+              handleEnrollNow={handleEnrollNow}
             />
           </motion.div>
         )}

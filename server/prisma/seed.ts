@@ -72,55 +72,55 @@ async function main() {
   const courseIdMap: Record<string, string> = {};
   const userIdMap: Record<string, string> = {};
 
-  // First, create users if they don't exist
-  const userData = [
-    {
-      userId: 'user_2ntu96pUCljUV2T9W0AThzjacQB',
-      email: 'user1@example.com',
-      name: 'User One',
-    },
-    {
-      userId: 'user_5vBn23WsLkMp7Jh4Gt8FxYcRz',
-      email: 'user2@example.com',
-      name: 'User Two',
-    },
-    {
-      userId: 'user_6tHm89QwNpKj3Fx5Vy2RdLcBs',
-      email: 'user3@example.com',
-      name: 'User Three',
-    },
-    {
-      userId: 'user_9xWp45MnKjL8vRt2Hs6BqDcEy',
-      email: 'user4@example.com',
-      name: 'User Four',
-    },
-    {
-      userId: 'user_7kFh92JkCpQw3N8M5L4xRzVtYs',
-      email: 'teacher1@example.com',
-      name: 'Teacher One',
-    },
-    {
-      userId: 'user_4mNj68RtPvXw2Ky9Qc7HbSdAf',
-      email: 'teacher2@example.com',
-      name: 'Teacher Two',
-    },
-  ];
+  // First, create mock users
+  // const userData = [
+  //   {
+  //     userId: 'user_2ntu96pUCljUV2T9W0AThzjacQB',
+  //     email: 'user1@example.com',
+  //     name: 'User One',
+  //   },
+  //   {
+  //     userId: 'user_5vBn23WsLkMp7Jh4Gt8FxYcRz',
+  //     email: 'user2@example.com',
+  //     name: 'User Two',
+  //   },
+  //   {
+  //     userId: 'user_6tHm89QwNpKj3Fx5Vy2RdLcBs',
+  //     email: 'user3@example.com',
+  //     name: 'User Three',
+  //   },
+  //   {
+  //     userId: 'user_9xWp45MnKjL8vRt2Hs6BqDcEy',
+  //     email: 'user4@example.com',
+  //     name: 'User Four',
+  //   },
+  //   {
+  //     userId: 'user_7kFh92JkCpQw3N8M5L4xRzVtYs',
+  //     email: 'teacher1@example.com',
+  //     name: 'Teacher One',
+  //   },
+  //   {
+  //     userId: 'user_4mNj68RtPvXw2Ky9Qc7HbSdAf',
+  //     email: 'teacher2@example.com',
+  //     name: 'Teacher Two',
+  //   },
+  // ];
 
-  for (const user of userData) {
-    const originalUserId = user.userId;
-    const cleanUser = removeIdFields(user);
+  // for (const user of userData) {
+  //   const originalUserId = user.userId;
+  //   const cleanUser = removeIdFields(user);
 
-    // Create the user
-    const createdUser = await prisma.user.create({
-      data: {
-        ...cleanUser,
-        hash: await hashPassword(DEFAULT_PASSWORD),
-      },
-    });
+  //   Create the user
+  //   const createdUser = await prisma.user.create({
+  //     data: {
+  //       ...cleanUser,
+  //       hash: await hashPassword(DEFAULT_PASSWORD),
+  //     },
+  //   });
 
-    // Store the mapping between original and new userId
-    userIdMap[originalUserId] = createdUser.userId;
-  }
+  //   Store the mapping between original and new userId
+  //   userIdMap[originalUserId] = createdUser.userId;
+  // }
 
   for (const fileName of orderedFileNames) {
     const filePath = path.join(dataDirectory, fileName);
@@ -359,6 +359,7 @@ async function main() {
                 return {
                   ...cleanChapter,
                   sectionProgressId: createdSectionProgress.id,
+                  chapterId: chapter.chapterId,
                 };
               });
 

@@ -11,18 +11,6 @@ CREATE TYPE "ChapterType" AS ENUM ('Text', 'Quiz', 'Video');
 CREATE TYPE "PaymentProvider" AS ENUM ('stripe');
 
 -- CreateTable
-CREATE TABLE "users" (
-    "userId" TEXT NOT NULL,
-    "email" TEXT NOT NULL,
-    "name" TEXT NOT NULL,
-    "hash" TEXT NOT NULL,
-    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" TIMESTAMP(3) NOT NULL,
-
-    CONSTRAINT "users_pkey" PRIMARY KEY ("userId")
-);
-
--- CreateTable
 CREATE TABLE "courses" (
     "courseId" TEXT NOT NULL,
     "teacherId" TEXT NOT NULL,
@@ -125,15 +113,13 @@ CREATE TABLE "SectionProgress" (
 
 -- CreateTable
 CREATE TABLE "ChapterProgress" (
+    "id" TEXT NOT NULL,
     "chapterId" TEXT NOT NULL,
     "completed" BOOLEAN NOT NULL,
     "sectionProgressId" TEXT NOT NULL,
 
-    CONSTRAINT "ChapterProgress_pkey" PRIMARY KEY ("chapterId")
+    CONSTRAINT "ChapterProgress_pkey" PRIMARY KEY ("id")
 );
-
--- CreateIndex
-CREATE UNIQUE INDEX "users_email_key" ON "users"("email");
 
 -- CreateIndex
 CREATE INDEX "CourseTransactionsIndex" ON "transactions"("courseId");
@@ -155,12 +141,6 @@ ALTER TABLE "enrollments" ADD CONSTRAINT "enrollments_courseId_fkey" FOREIGN KEY
 
 -- AddForeignKey
 ALTER TABLE "transactions" ADD CONSTRAINT "transactions_courseId_fkey" FOREIGN KEY ("courseId") REFERENCES "courses"("courseId") ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "transactions" ADD CONSTRAINT "transactions_userId_fkey" FOREIGN KEY ("userId") REFERENCES "users"("userId") ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "UserCourseProgress" ADD CONSTRAINT "UserCourseProgress_userId_fkey" FOREIGN KEY ("userId") REFERENCES "users"("userId") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "UserCourseProgress" ADD CONSTRAINT "UserCourseProgress_courseId_fkey" FOREIGN KEY ("courseId") REFERENCES "courses"("courseId") ON DELETE RESTRICT ON UPDATE CASCADE;

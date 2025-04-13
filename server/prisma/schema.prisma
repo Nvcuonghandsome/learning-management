@@ -10,18 +10,6 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
-  userId    String      @id @default(uuid())
-  email     String @unique
-  name String
-  hash      String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  Transaction Transaction[]
-  UserCourseProgress UserCourseProgress[]
-
-  @@map("users")
-}
 
 model Course {
   courseId     String       @id @default(uuid())
@@ -119,7 +107,6 @@ model Transaction {
   amount          Float?
 
   course          Course   @relation(fields: [courseId], references: [courseId])
-  user            User    @relation(fields: [userId], references: [userId])
 
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
@@ -143,7 +130,6 @@ model UserCourseProgress {
 
   sections              SectionProgress[]
 
-  user                  User     @relation(fields: [userId], references: [userId])
   course                Course    @relation(fields: [courseId], references: [courseId])
 
   createdAt             DateTime  @default(now())
@@ -162,7 +148,8 @@ model SectionProgress {
 }
 
 model ChapterProgress {
-  chapterId        String   @id @default(uuid())
+  id               String   @id @default(uuid())
+  chapterId        String
   completed        Boolean
   sectionProgress  SectionProgress @relation(fields: [sectionProgressId], references: [id])
   sectionProgressId String
