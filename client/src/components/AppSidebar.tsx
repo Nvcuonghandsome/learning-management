@@ -48,7 +48,8 @@ const AppSidebar = () => {
   if (!isLoaded) return <Loading />;
   if (!user) return <div>User not found</div>;
 
-  const userType = user?.publicMetadata?.userType as 'student' | 'teacher';
+  const userType =
+    (user?.publicMetadata?.userType as 'student' | 'teacher') || 'student';
   const currentNavLinks = navLinks[userType];
 
   return (

@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Post, Query, UseGuards } from '@nestjs/common';
 import { StripeService } from './stripe.service';
 import { CreatePaymentIntentDto, CreateTransactionDto } from './dto/stripe.dto';
 import { AuthGuard } from '@nestjs/passport';
@@ -22,5 +22,10 @@ export class StripeController {
       body.amount,
       body.paymentProvider,
     );
+  }
+
+  @Get('/list')
+  listTransactions(@Query('userId') userId: string) {
+    return this.stripe.listTransactions(userId);
   }
 }

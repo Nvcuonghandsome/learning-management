@@ -98,6 +98,12 @@ export const api = createApi({
         body: transaction,
       }),
     }),
+    getTransactionList: build.query<Transaction[], string>({
+      query: (userId) => ({
+        url: `/transactions/list?userId=${userId}`,
+        method: 'GET',
+      }),
+    }),
   }),
 });
 
@@ -107,4 +113,5 @@ export const {
   useUpdateUserMutation,
   useCreatePaymentIntentMutation,
   useCreateTransactionMutation,
+  useGetTransactionListQuery,
 } = api;

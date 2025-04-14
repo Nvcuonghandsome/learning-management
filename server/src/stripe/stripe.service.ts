@@ -116,4 +116,16 @@ export class StripeService {
       };
     }
   }
+
+  async listTransactions(userId: string) {
+    const list = await this.prisma.transaction.findMany({
+      where: {
+        userId,
+      },
+    });
+    return {
+      message: 'Get transaction list successfully!',
+      data: list,
+    };
+  }
 }
