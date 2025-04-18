@@ -59,10 +59,21 @@ export const api = createApi({
   reducerPath: 'api',
   tagTypes: ['Courses', 'Users'],
   endpoints: (build) => ({
-    getCourses: build.query<Course[], { category?: string }>({
-      query: ({ category }) => ({
+    /*
+      COURSE API
+    */
+    getCourses: build.query<
+      Course[],
+      {
+        category?: string;
+        search?: string;
+        page?: string;
+        limit?: string;
+      }
+    >({
+      query: ({ category, search, page, limit }) => ({
         url: '/courses',
-        params: { category },
+        params: { category, search, page, limit },
       }),
       providesTags: ['Courses'],
     }),
@@ -73,6 +84,76 @@ export const api = createApi({
       // only update data of course with id on FE
       providesTags: (result, error, id) => [{ type: 'Courses', id }],
     }),
+    createCourse: build.mutation<Partial<Course>, Partial<Course>>({
+      query: (body) => ({
+        url: '/courses/create',
+        method: 'POST',
+        body,
+      }),
+      invalidatesTags: ['Courses'],
+    }),
+    updateCourse: build.mutation<Partial<Course>, Partial<Course>>({
+      query: ({ courseId, ...body }) => ({
+        url: `/courses/update/${courseId}`,
+        method: 'PUT',
+        body,
+      }),
+      invalidatesTags: (result, error, { courseId }) => [
+        { type: 'Courses', id: courseId },
+      ],
+    }),
+    deleteCourse: build.mutation<{ message: string }, { courseId: string }>({
+      query: ({ courseId }) => ({
+        url: `/courses/delete/${courseId}`,
+        method: 'DELETE',
+      }),
+      invalidatesTags: (result, error, { courseId }) => [
+        { type: 'Courses', id: courseId },
+      ],
+    }),
+    createSection: build.mutation<Partial<Section>, Partial<Section>>({
+      query: (body) => ({
+        url: '/courses/section/create',
+        method: 'POST',
+        body,
+      }),
+    }),
+    updateSection: build.mutation<Partial<Section>, Partial<Section>>({
+      query: ({ sectionId, ...body }) => ({
+        url: `/courses/section/update/${sectionId}`,
+        method: 'PUT',
+        body,
+      }),
+    }),
+    deleteSection: build.mutation<{ message: string }, { sectionId: string }>({
+      query: ({ sectionId }) => ({
+        url: `/courses/section/delete/${sectionId}`,
+        method: 'DELETE',
+      }),
+    }),
+    createChapter: build.mutation<Partial<Chapter>, Partial<Chapter>>({
+      query: (body) => ({
+        url: '/courses/chapter/create',
+        method: 'POST',
+        body,
+      }),
+    }),
+    updateChapter: build.mutation<Partial<Chapter>, Partial<Chapter>>({
+      query: ({ chapterId, ...body }) => ({
+        url: `/courses/chapter/update/${chapterId}`,
+        method: 'PUT',
+        body,
+      }),
+    }),
+    deleteChapter: build.mutation<{ message: string }, { chapterId: string }>({
+      query: ({ chapterId }) => ({
+        url: `/courses/chapter/delete/${chapterId}`,
+        method: 'DELETE',
+      }),
+    }),
+    /*
+      USER API
+    */
     updateUser: build.mutation<User, Partial<User> & { userId: string }>({
       query: ({ userId, ...updatedUser }) => ({
         url: `users/clerk/${userId}`,
@@ -81,6 +162,9 @@ export const api = createApi({
       }),
       invalidatesTags: ['Users'],
     }),
+    /*
+      TRANSACTION API
+    */
     createPaymentIntent: build.mutation<
       { clientSecret: string },
       { amount: number }
@@ -110,6 +194,15 @@ export const api = createApi({
 export const {
   useGetCoursesQuery,
   useGetCourseQuery,
+  useCreateCourseMutation,
+  useUpdateCourseMutation,
+  useDeleteCourseMutation,
+  useCreateSectionMutation,
+  useUpdateSectionMutation,
+  useDeleteSectionMutation,
+  useCreateChapterMutation,
+  useUpdateChapterMutation,
+  useDeleteChapterMutation,
   useUpdateUserMutation,
   useCreatePaymentIntentMutation,
   useCreateTransactionMutation,

@@ -26,6 +26,7 @@ model Course {
   enrollments  Enrollment[]
   createdAt    DateTime      @default(now())
   updatedAt    DateTime      @updatedAt
+  isDeleted    Boolean       @default(false)
   Transaction Transaction[]
   UserCourseProgress UserCourseProgress[]
 
@@ -54,7 +55,7 @@ model Chapter {
   videoUniqueId  String?
   videoUrl       String?
   video       String?
-  section     Section   @relation(fields: [sectionId], references: [sectionId])
+  section     Section   @relation(fields: [sectionId], references: [sectionId], onDelete: Cascade)
   sectionId   String
 
   @@map("chapters")
@@ -65,7 +66,7 @@ model Comment {
   userId      String
   text        String
   timestamp   String
-  chapter     Chapter   @relation(fields: [chapterId], references: [chapterId])
+  chapter     Chapter   @relation(fields: [chapterId], references: [chapterId], onDelete: Cascade)
   chapterId   String
 
   @@map("comments")
