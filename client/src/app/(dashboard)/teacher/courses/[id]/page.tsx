@@ -6,9 +6,18 @@ import Header from '@/components/Header';
 import { Button } from '@/components/ui/button';
 import { Form } from '@/components/ui/form';
 import { courseSchema } from '@/lib/schemas';
-import { centsToDollars, createCourseFormData } from '@/lib/utils';
-import { globalSlice, openSectionModal, setSections } from '@/state';
-import { useGetCourseQuery, useUpdateCourseMutation } from '@/state/api';
+import { centsToDollars } from '@/lib/utils';
+import { openSectionModal, setSections } from '@/state';
+import {
+  useGetCourseQuery,
+  useUpdateCourseMutation,
+  useUpdateSectionMutation,
+  useCreateSectionMutation,
+  useUpdateChapterMutation,
+  useCreateChapterMutation,
+  useDeleteSectionMutation,
+  useDeleteChapterMutation,
+} from '@/state/api';
 import { useAppDispatch, useAppSelector } from '@/state/redux';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { ArrowLeft, Plus } from 'lucide-react';
@@ -17,13 +26,20 @@ import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import ChapterModal from './ChapterModal';
 import SectionModal from './SectionModal';
+import { toast } from 'sonner';
 
 const CourseEditor = () => {
   const router = useRouter();
   const params = useParams();
   const id = params.id as string;
-  const { data: course, isLoading, isError, refetch } = useGetCourseQuery(id);
+  const { data: course, isLoading } = useGetCourseQuery(id);
   const [updateCourse] = useUpdateCourseMutation();
+  const [updateSection] = useUpdateSectionMutation();
+  const [createSection] = useCreateSectionMutation();
+  const [updateChapter] = useUpdateChapterMutation();
+  const [createChapter] = useCreateChapterMutation();
+  const [deleteSection] = useDeleteSectionMutation();
+  const [deleteChapter] = useDeleteChapterMutation();
 
   const dispatch = useAppDispatch();
   const { sections } = useAppSelector((state) => state.global.courseEditor);
@@ -54,26 +70,109 @@ const CourseEditor = () => {
 
   const onSubmit = async (data: CourseFormData) => {
     try {
-      const updatedCourse = await updateCourse({
+      // Update course basic information first
+      await updateCourse({
         courseId: id,
         title: data.courseTitle,
-        category: data.courseCategory,
         description: data.courseDescription,
-        status: data.courseStatus ? 'Published' : 'Draft',
+        category: data.courseCategory,
         price: parseFloat(data.coursePrice),
+        status: data.courseStatus ? 'Published' : 'Draft',
       }).unwrap();
 
-      console.log('sections', sections);
+      // Get existing sections and chapters from the course data
+      const existingSections = course?.sections || [];
+      const existingChapters = existingSections.flatMap(
+        (section) => section.chapters || [],
+      );
 
-      // save sections
+      // Find sections and chapters to delete
+      const sectionsToDelete = existingSections.filter(
+        (existingSection) =>
+          !sections.some(
+            (section) => section.sectionId === existingSection.sectionId,
+          ),
+      );
 
-      // save chapters
+      const chaptersToDelete = existingChapters.filter(
+        (existingChapter) =>
+          !sections.some((section) =>
+            section.chapters.some(
+              (chapter) => chapter.chapterId === existingChapter.chapterId,
+            ),
+          ),
+      );
 
-      // upload chapter video
+      // Delete removed chapters first
+      for (const chapter of chaptersToDelete) {
+        if (chapter.chapterId) {
+          await deleteChapter({ chapterId: chapter.chapterId }).unwrap();
+        }
+      }
 
-      refetch();
+      // Delete removed sections
+      for (const section of sectionsToDelete) {
+        if (section.sectionId) {
+          await deleteSection({ sectionId: section.sectionId }).unwrap();
+        }
+      }
+
+      // Handle sections and chapters
+      for (const section of sections) {
+        if (section.sectionId && !section.sectionId.includes('dragId')) {
+          // Update existing section
+          await updateSection({
+            sectionId: section.sectionId,
+            sectionTitle: section.sectionTitle,
+            sectionDescription: section.sectionDescription,
+            courseId: id,
+          }).unwrap();
+
+          // Handle chapters in this section
+          for (const chapter of section.chapters) {
+            if (chapter.chapterId && !chapter.chapterId.includes('dragId')) {
+              // Update existing chapter
+              await updateChapter({
+                chapterId: chapter.chapterId,
+                title: chapter.title,
+                content: chapter.content,
+                type: chapter.type,
+                sectionId: section.sectionId,
+              }).unwrap();
+            } else {
+              // Create new chapter
+              await createChapter({
+                title: chapter.title,
+                content: chapter.content,
+                type: chapter.type,
+                sectionId: section.sectionId,
+              }).unwrap();
+            }
+          }
+        } else {
+          // Create new section
+          const newSection = await createSection({
+            sectionTitle: section.sectionTitle,
+            sectionDescription: section.sectionDescription,
+            courseId: id,
+          }).unwrap();
+
+          // Create chapters for the new section
+          for (const chapter of section.chapters) {
+            await createChapter({
+              title: chapter.title,
+              content: chapter.content,
+              type: chapter.type,
+              sectionId: newSection.sectionId,
+            }).unwrap();
+          }
+        }
+      }
+
+      toast.success('Course updated successfully');
     } catch (error) {
-      console.error('Failed to update course');
+      console.error('Failed to update course:', error);
+      toast.error('Failed to update course');
     }
   };
 

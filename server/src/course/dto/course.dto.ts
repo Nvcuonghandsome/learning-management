@@ -90,18 +90,23 @@ export class CreateChapterDto {
   @IsString()
   content: string;
 
+  @IsOptional()
   @IsString()
   videoLength?: number;
 
+  @IsOptional()
   @IsString()
   videoType?: string;
 
+  @IsOptional()
   @IsString()
   videoUniqueId?: string;
 
+  @IsOptional()
   @IsString()
   videoUrl?: string;
 
+  @IsOptional()
   @IsString()
   video?: string;
 }
@@ -116,18 +121,23 @@ export class UpdateChapterDto {
   @IsString()
   content: string;
 
+  @IsOptional()
   @IsString()
   videoLength?: number;
 
+  @IsOptional()
   @IsString()
   videoType?: string;
 
+  @IsOptional()
   @IsString()
   videoUniqueId?: string;
 
+  @IsOptional()
   @IsString()
   videoUrl?: string;
 
+  @IsOptional()
   @IsString()
   video?: string;
 }
