@@ -58,7 +58,14 @@ export class CourseService {
           include: {
             sections: {
               include: {
-                chapters: true,
+                chapters: {
+                  orderBy: {
+                    order: 'asc',
+                  },
+                },
+              },
+              orderBy: {
+                order: 'asc',
               },
             },
             enrollments: true,
@@ -104,7 +111,13 @@ export class CourseService {
                 include: {
                   comments: true,
                 },
+                orderBy: {
+                  order: 'asc',
+                },
               },
+            },
+            orderBy: {
+              order: 'asc',
             },
           },
           enrollments: true,
@@ -276,6 +289,7 @@ export class CourseService {
       },
       data: {
         sectionTitle: body.sectionTitle,
+        order: body.order,
         ...(body.sectionDescription !== undefined && {
           sectionDescription: body.sectionDescription,
         }),
@@ -366,6 +380,7 @@ export class CourseService {
         type: body.type,
         content: body.content,
         title: body.title,
+        order: body.order,
         ...(body.video !== undefined && {
           video: body.video,
         }),

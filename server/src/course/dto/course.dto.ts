@@ -75,6 +75,9 @@ export class UpdateSectionDto {
 
   @IsString()
   sectionDescription?: string;
+
+  @IsNumber()
+  order: number;
 }
 
 export class CreateChapterDto {
@@ -120,6 +123,9 @@ export class UpdateChapterDto {
 
   @IsString()
   content: string;
+
+  @IsNumber()
+  order: number;
 
   @IsOptional()
   @IsString()

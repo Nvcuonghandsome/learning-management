@@ -108,6 +108,7 @@ declare global {
     freePreview?: boolean;
     type: 'Text' | 'Quiz' | 'Video';
     sectionId?: string;
+    order: number;
   }
 
   interface ChapterProgress {
@@ -126,6 +127,7 @@ declare global {
     sectionDescription?: string;
     chapters: Chapter[];
     courseId?: string;
+    order: number;
   }
 
   interface WizardStepperProps {

@@ -32,7 +32,7 @@ const CourseEditor = () => {
   const router = useRouter();
   const params = useParams();
   const id = params.id as string;
-  const { data: course, isLoading } = useGetCourseQuery(id);
+  const { data: course, isLoading, refetch } = useGetCourseQuery(id);
   const [updateCourse] = useUpdateCourseMutation();
   const [updateSection] = useUpdateSectionMutation();
   const [createSection] = useCreateSectionMutation();
@@ -117,58 +117,78 @@ const CourseEditor = () => {
         }
       }
 
-      // Handle sections and chapters
-      for (const section of sections) {
+      // Handle sections and chapters with order information
+      for (
+        let sectionIndex = 0;
+        sectionIndex < sections.length;
+        sectionIndex++
+      ) {
+        const section = sections[sectionIndex];
         if (section.sectionId && !section.sectionId.includes('dragId')) {
-          // Update existing section
+          // Update existing section with order information
           await updateSection({
             sectionId: section.sectionId,
             sectionTitle: section.sectionTitle,
             sectionDescription: section.sectionDescription,
             courseId: id,
+            order: sectionIndex,
           }).unwrap();
 
-          // Handle chapters in this section
-          for (const chapter of section.chapters) {
+          // Handle chapters in this section with order information
+          for (
+            let chapterIndex = 0;
+            chapterIndex < section.chapters.length;
+            chapterIndex++
+          ) {
+            const chapter = section.chapters[chapterIndex];
             if (chapter.chapterId && !chapter.chapterId.includes('dragId')) {
-              // Update existing chapter
+              // Update existing chapter with order information
               await updateChapter({
                 chapterId: chapter.chapterId,
                 title: chapter.title,
                 content: chapter.content,
                 type: chapter.type,
                 sectionId: section.sectionId,
+                order: chapterIndex,
               }).unwrap();
             } else {
-              // Create new chapter
+              // Create new chapter with order information
               await createChapter({
                 title: chapter.title,
                 content: chapter.content,
                 type: chapter.type,
                 sectionId: section.sectionId,
+                order: chapterIndex,
               }).unwrap();
             }
           }
         } else {
-          // Create new section
+          // Create new section with order information
           const newSection = await createSection({
             sectionTitle: section.sectionTitle,
             sectionDescription: section.sectionDescription,
             courseId: id,
+            order: sectionIndex,
           }).unwrap();
 
-          // Create chapters for the new section
-          for (const chapter of section.chapters) {
+          // Create chapters for the new section with order information
+          for (
+            let chapterIndex = 0;
+            chapterIndex < section.chapters.length;
+            chapterIndex++
+          ) {
+            const chapter = section.chapters[chapterIndex];
             await createChapter({
               title: chapter.title,
               content: chapter.content,
               type: chapter.type,
               sectionId: newSection.sectionId,
+              order: chapterIndex,
             }).unwrap();
           }
         }
       }
-
+      refetch();
       toast.success('Course updated successfully');
     } catch (error) {
       console.error('Failed to update course:', error);
