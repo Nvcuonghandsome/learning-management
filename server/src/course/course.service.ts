@@ -14,6 +14,7 @@ import {
   CreateCourseDto,
   CreateSectionDto,
   UpdateChapterDto,
+  UpdateCourseDto,
   UpdateSectionDto,
 } from './dto/course.dto';
 import { ClerkService } from 'src/clerk/clerk.service';
@@ -161,7 +162,7 @@ export class CourseService {
     };
   }
 
-  async updateCourse(courseId: string, body: CreateCourseDto) {
+  async updateCourse(courseId: string, body: UpdateCourseDto) {
     // check course existed
     const course = await this.prisma.course.findUnique({
       where: {
@@ -182,12 +183,9 @@ export class CourseService {
         isDeleted: false,
       },
       data: {
-        teacherId: body.teacherId,
-        teacherName: body.teacherName,
         title: body.title,
         category: body.category,
         status: body.status,
-        level: body.level,
         ...(body.description !== undefined && {
           description: body.description,
         }),

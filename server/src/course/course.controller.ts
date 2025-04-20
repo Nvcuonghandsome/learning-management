@@ -14,6 +14,7 @@ import {
   CreateCourseDto,
   CreateSectionDto,
   UpdateChapterDto,
+  UpdateCourseDto,
   UpdateSectionDto,
 } from './dto/course.dto';
 
@@ -41,16 +42,16 @@ export class CourseController {
     return this.courseService.createCourse(body);
   }
 
-  @Put('/update')
+  @Put('/update/:courseId')
   updateCourse(
-    @Query('courseId') courseId: string,
-    @Body() body: CreateCourseDto,
+    @Param('courseId') courseId: string,
+    @Body() body: UpdateCourseDto,
   ) {
     return this.courseService.updateCourse(courseId, body);
   }
 
-  @Delete('/delete')
-  deleteCourse(@Query('courseId') courseId: string) {
+  @Delete('/delete/:courseId')
+  deleteCourse(@Param('courseId') courseId: string) {
     return this.courseService.deleteCourse(courseId);
   }
 
@@ -59,16 +60,16 @@ export class CourseController {
     return this.courseService.createSection(body);
   }
 
-  @Put('/section/update')
+  @Put('/section/update/:sectionId')
   updateSection(
-    @Query('sectionId') sectionId: string,
+    @Param('sectionId') sectionId: string,
     @Body() body: UpdateSectionDto,
   ) {
     return this.courseService.updateSection(sectionId, body);
   }
 
-  @Delete('/section/delete')
-  deleteSection(@Query('sectionId') sectionId: string) {
+  @Delete('/section/delete/:sectionId')
+  deleteSection(@Param('sectionId') sectionId: string) {
     return this.courseService.deleteSection(sectionId);
   }
 
@@ -77,16 +78,16 @@ export class CourseController {
     return this.courseService.createChapter(body);
   }
 
-  @Put('/chapter/update')
+  @Put('/chapter/update/:chapterId')
   updateChapter(
-    @Query('chapterId') chapterId: string,
+    @Param('chapterId') chapterId: string,
     @Body() body: UpdateChapterDto,
   ) {
     return this.courseService.updateChapter(chapterId, body);
   }
 
-  @Delete('/chapter/delete')
-  deleteChapter(@Query('chapterId') chapterId: string) {
+  @Delete('/chapter/delete/:chapterId')
+  deleteChapter(@Param('chapterId') chapterId: string) {
     return this.courseService.deleteChapter(chapterId);
   }
 }

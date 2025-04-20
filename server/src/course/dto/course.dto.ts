@@ -1,4 +1,4 @@
-import { IsAlpha, IsArray, IsEnum, IsNumber, IsString } from 'class-validator';
+import { IsEnum, IsNumber, IsOptional, IsString } from 'class-validator';
 
 export class CreateCourseDto {
   @IsString()
@@ -10,20 +10,49 @@ export class CreateCourseDto {
   @IsString()
   title: string;
 
+  @IsOptional()
   @IsString()
   description?: string;
 
   @IsString()
   category: string;
 
+  @IsOptional()
   @IsString()
   image?: string;
 
+  @IsOptional()
   @IsNumber()
   price?: number;
 
   @IsEnum(['Beginner', 'Intermediate', 'Advanced'])
   level: 'Beginner' | 'Intermediate' | 'Advanced';
+
+  @IsEnum(['Draft', 'Published'])
+  status: 'Draft' | 'Published';
+}
+
+export class UpdateCourseDto {
+  @IsString()
+  title: string;
+
+  @IsOptional()
+  @IsString()
+  description?: string;
+
+  @IsString()
+  category: string;
+
+  @IsOptional()
+  @IsString()
+  image?: string;
+
+  @IsOptional()
+  @IsNumber()
+  price?: number;
+
+  // @IsEnum(['Beginner', 'Intermediate', 'Advanced'])
+  // level: 'Beginner' | 'Intermediate' | 'Advanced';
 
   @IsEnum(['Draft', 'Published'])
   status: 'Draft' | 'Published';

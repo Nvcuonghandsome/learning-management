@@ -1,16 +1,16 @@
-"use client";
+'use client';
 
-import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
-import { Button } from "@/components/ui/button";
-import { Trash2, Edit, Plus, GripVertical } from "lucide-react";
-import { useAppDispatch, useAppSelector } from "@/state/redux";
+import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd';
+import { Button } from '@/components/ui/button';
+import { Trash2, Edit, Plus, GripVertical } from 'lucide-react';
+import { useAppDispatch, useAppSelector } from '@/state/redux';
 import {
   setSections,
   deleteSection,
   deleteChapter,
   openSectionModal,
   openChapterModal,
-} from "@/state";
+} from '@/state';
 
 export default function DroppableComponent() {
   const dispatch = useAppDispatch();
@@ -34,7 +34,10 @@ export default function DroppableComponent() {
     const startIndex = result.source.index;
     const endIndex = result.destination.index;
 
-    const updatedSections = [...sections];
+    const updatedSections = sections.map((section, idx) => ({
+      ...section,
+      chapters: idx === sectionIndex ? [...section.chapters] : section.chapters,
+    }));
     const updatedChapters = [...updatedSections[sectionIndex].chapters];
     const [reorderedChapter] = updatedChapters.splice(startIndex, 1);
     updatedChapters.splice(endIndex, 0, reorderedChapter);
@@ -59,8 +62,8 @@ export default function DroppableComponent() {
                     {...draggableProvider.draggableProps}
                     className={`droppable-section ${
                       sectionIndex % 2 === 0
-                        ? "droppable-section--even"
-                        : "droppable-section--odd"
+                        ? 'droppable-section--even'
+                        : 'droppable-section--odd'
                     }`}
                   >
                     <SectionHeader
@@ -96,7 +99,7 @@ export default function DroppableComponent() {
                                     />
                                   )}
                                 </Draggable>
-                              )
+                              ),
                             )}
                             {droppableProvider.placeholder}
                           </div>
@@ -113,7 +116,7 @@ export default function DroppableComponent() {
                           openChapterModal({
                             sectionIndex,
                             chapterIndex: null,
-                          })
+                          }),
                         )
                       }
                       className="add-chapter-button group"
@@ -205,8 +208,8 @@ const ChapterItem = ({
       {...draggableProvider.dragHandleProps}
       className={`droppable-chapter ${
         chapterIndex % 2 === 1
-          ? "droppable-chapter--odd"
-          : "droppable-chapter--even"
+          ? 'droppable-chapter--odd'
+          : 'droppable-chapter--even'
       }`}
     >
       <div className="droppable-chapter__title">
@@ -224,7 +227,7 @@ const ChapterItem = ({
               openChapterModal({
                 sectionIndex,
                 chapterIndex,
-              })
+              }),
             )
           }
         >
@@ -240,7 +243,7 @@ const ChapterItem = ({
               deleteChapter({
                 sectionIndex,
                 chapterIndex,
-              })
+              }),
             )
           }
         >

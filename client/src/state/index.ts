@@ -72,7 +72,10 @@ export const globalSlice = createSlice({
 
     addChapter: (
       state,
-      action: PayloadAction<{ sectionIndex: number; chapter: Chapter }>,
+      action: PayloadAction<{
+        sectionIndex: number;
+        chapter: Chapter;
+      }>,
     ) => {
       state.courseEditor.sections[action.payload.sectionIndex].chapters.push(
         action.payload.chapter,

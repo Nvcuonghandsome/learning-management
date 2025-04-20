@@ -50,6 +50,10 @@ const Courses = () => {
     const result = await createCourse({
       teacherId: user.id,
       teacherName: user.fullName || 'Unknown Teacher',
+      status: 'Draft',
+      category: '',
+      title: '',
+      level: 'Beginner',
     }).unwrap();
 
     router.push(`/teacher/courses/${result.courseId}`);
