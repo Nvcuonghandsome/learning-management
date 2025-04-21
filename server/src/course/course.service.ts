@@ -416,4 +416,65 @@ export class CourseService {
       message: 'Delete chapter successfully!',
     };
   }
+
+  // PROGRESS
+  async getUserEnrolledCourses(userId: string) {
+    const enrolledCourses = await this.prisma.userCourseProgress.findMany({
+      where: {
+        userId,
+      },
+      include: {
+        course: {
+          include: {
+            sections: {
+              include: {
+                chapters: true,
+              },
+            },
+          },
+        },
+        sections: {
+          include: {
+            chapters: true,
+          },
+        },
+      },
+    });
+
+    return {
+      message: 'Retrieved user enrolled courses successfully!',
+      data: enrolledCourses,
+    };
+  }
+
+  async getUserCourseProgress(userId: string, courseId: string) {
+    console.log('userId111', userId, 'courseId', courseId);
+    const courseProgress = await this.prisma.userCourseProgress.findFirst({
+      where: {
+        userId,
+        courseId,
+      },
+      include: {
+        course: {
+          include: {
+            sections: {
+              include: {
+                chapters: true,
+              },
+            },
+          },
+        },
+        sections: {
+          include: {
+            chapters: true,
+          },
+        },
+      },
+    });
+
+    return {
+      message: 'Retrieved user course progress successfully!',
+      data: courseProgress,
+    };
+  }
 }

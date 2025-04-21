@@ -57,7 +57,7 @@ const customBaseQuery = async (
 export const api = createApi({
   baseQuery: customBaseQuery,
   reducerPath: 'api',
-  tagTypes: ['Courses', 'Users'],
+  tagTypes: ['Courses', 'Users', 'UserCourseProgress'],
   endpoints: (build) => ({
     /*
       COURSE API
@@ -152,6 +152,36 @@ export const api = createApi({
       }),
     }),
     /*
+      COURSE PROGRESS API
+    */
+    getUserEnrolledCourses: build.query<UserCourseProgress[], string>({
+      query: (userId) => ({
+        url: `/courses/progress/user-enrolled-courses/${userId}`,
+      }),
+      providesTags: ['Courses', 'UserCourseProgress'],
+    }),
+    getUserCourseProgress: build.query<
+      UserCourseProgress,
+      { userId: string; courseId: string }
+    >({
+      query: ({ userId, courseId }) => ({
+        url: `/courses/progress/user-course-progress`,
+        params: { userId, courseId },
+      }),
+      providesTags: ['UserCourseProgress'],
+    }),
+    updateUserCourseProgress: build.mutation<
+      UserCourseProgress,
+      { userId: string; courseId: string; progressData: any }
+    >({
+      query: (data) => ({
+        url: `/courses/progress/user-course-progress`,
+        method: 'PUT',
+        body: data,
+      }),
+      invalidatesTags: ['UserCourseProgress'],
+    }),
+    /*
       USER API
     */
     updateUser: build.mutation<User, Partial<User> & { userId: string }>({
@@ -203,6 +233,9 @@ export const {
   useCreateChapterMutation,
   useUpdateChapterMutation,
   useDeleteChapterMutation,
+  useGetUserEnrolledCoursesQuery,
+  useGetUserCourseProgressQuery,
+  useUpdateUserCourseProgressMutation,
   useUpdateUserMutation,
   useCreatePaymentIntentMutation,
   useCreateTransactionMutation,

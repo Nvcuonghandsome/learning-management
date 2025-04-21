@@ -90,4 +90,19 @@ export class CourseController {
   deleteChapter(@Param('chapterId') chapterId: string) {
     return this.courseService.deleteChapter(chapterId);
   }
+
+  // PROGRESS
+  @Get('/progress/user-enrolled-courses/:userId')
+  getUserEnrolledCourses(@Param('userId') userId: string) {
+    return this.courseService.getUserEnrolledCourses(userId);
+  }
+
+  @Get('/progress/user-course-progress')
+  getUserCourseProgress(
+    @Query('userId') userId: string,
+    @Query('courseId') courseId: string,
+  ) {
+    console.log('userId000', userId, 'courseId', courseId);
+    return this.courseService.getUserCourseProgress(userId, courseId);
+  }
 }

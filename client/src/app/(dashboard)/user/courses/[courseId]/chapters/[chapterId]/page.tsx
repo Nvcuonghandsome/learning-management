@@ -1,12 +1,12 @@
-"use client";
+'use client';
 
-import { useRef } from "react";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
-import ReactPlayer from "react-player";
-import Loading from "@/components/Loading";
-import { useCourseProgressData } from "@/hooks/useCourseProgressData";
+import { useRef } from 'react';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
+import ReactPlayer from 'react-player';
+import Loading from '@/components/Loading';
+import { useCourseProgressData } from '@/hooks/useCourseProgressData';
 
 const Course = () => {
   const {
@@ -21,7 +21,7 @@ const Course = () => {
     hasMarkedComplete,
     setHasMarkedComplete,
   } = useCourseProgressData();
-  console.log("currentChapter.video:", currentChapter);
+  console.log('currentChapter.video:', currentChapter);
 
   const playerRef = useRef<ReactPlayer>(null);
 
@@ -38,7 +38,7 @@ const Course = () => {
       updateChapterProgress(
         currentSection.sectionId,
         currentChapter.chapterId,
-        true
+        true,
       );
     }
   };
@@ -52,7 +52,7 @@ const Course = () => {
       <div className="course__container">
         <div className="course__breadcrumb">
           <div className="course__path">
-            {course.title} / {currentSection?.sectionTitle} /{" "}
+            {course.title} / {currentSection?.sectionTitle} /{' '}
             <span className="course__current-chapter">
               {currentChapter?.title}
             </span>
@@ -86,7 +86,7 @@ const Course = () => {
                 config={{
                   file: {
                     attributes: {
-                      controlsList: "nodownload",
+                      controlsList: 'nodownload',
                     },
                   },
                 }}

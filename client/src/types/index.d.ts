@@ -75,6 +75,7 @@ declare global {
     overallProgress: number;
     sections: SectionProgress[];
     lastAccessedTimestamp: string;
+    course: Course;
   }
 
   type CreateUserArgs = Omit<User, 'userId'>;

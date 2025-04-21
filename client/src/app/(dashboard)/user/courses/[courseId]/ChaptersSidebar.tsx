@@ -1,16 +1,16 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef } from 'react';
 import {
   ChevronDown,
   ChevronUp,
   FileText,
   CheckCircle,
   Trophy,
-} from "lucide-react";
-import { useRouter } from "next/navigation";
-import { cn } from "@/lib/utils";
-import { useSidebar } from "@/components/ui/sidebar";
-import Loading from "@/components/Loading";
-import { useCourseProgressData } from "@/hooks/useCourseProgressData";
+} from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import { cn } from '@/lib/utils';
+import { useSidebar } from '@/components/ui/sidebar';
+import Loading from '@/components/Loading';
+import { useCourseProgressData } from '@/hooks/useCourseProgressData';
 
 const ChaptersSidebar = () => {
   const router = useRouter();
@@ -41,7 +41,7 @@ const ChaptersSidebar = () => {
     setExpandedSections((prevSections) =>
       prevSections.includes(sectionTitle)
         ? prevSections.filter((title) => title !== sectionTitle)
-        : [...prevSections, sectionTitle]
+        : [...prevSections, sectionTitle],
     );
   };
 
@@ -63,7 +63,7 @@ const ChaptersSidebar = () => {
           section={section}
           index={index}
           sectionProgress={userProgress.sections.find(
-            (s) => s.sectionId === section.sectionId
+            (s) => s.sectionId === section.sectionId,
           )}
           chapterId={chapterId as string}
           courseId={courseId as string}
@@ -99,7 +99,7 @@ const Section = ({
   updateChapterProgress: (
     sectionId: string,
     chapterId: string,
-    completed: boolean
+    completed: boolean,
   ) => void;
 }) => {
   const completedChapters =
@@ -169,14 +169,14 @@ const ProgressVisuals = ({
         <div className="chapters-sidebar__progress-bars">
           {section.chapters.map((chapter: any) => {
             const isCompleted = sectionProgress?.chapters.find(
-              (c: any) => c.chapterId === chapter.chapterId
+              (c: any) => c.chapterId === chapter.chapterId,
             )?.completed;
             return (
               <div
                 key={chapter.chapterId}
                 className={cn(
-                  "chapters-sidebar__progress-bar",
-                  isCompleted && "chapters-sidebar__progress-bar--completed"
+                  'chapters-sidebar__progress-bar',
+                  isCompleted && 'chapters-sidebar__progress-bar--completed',
                 )}
               ></div>
             );
@@ -209,7 +209,7 @@ const ChaptersList = ({
   updateChapterProgress: (
     sectionId: string,
     chapterId: string,
-    completed: boolean
+    completed: boolean,
   ) => void;
 }) => {
   return (
@@ -251,11 +251,11 @@ const Chapter = ({
   updateChapterProgress: (
     sectionId: string,
     chapterId: string,
-    completed: boolean
+    completed: boolean,
   ) => void;
 }) => {
   const chapterProgress = sectionProgress?.chapters.find(
-    (c: any) => c.chapterId === chapter.chapterId
+    (c: any) => c.chapterId === chapter.chapterId,
   );
   const isCompleted = chapterProgress?.completed;
   const isCurrentChapter = chapterId === chapter.chapterId;
@@ -268,8 +268,8 @@ const Chapter = ({
 
   return (
     <li
-      className={cn("chapters-sidebar__chapter", {
-        "chapters-sidebar__chapter--current": isCurrentChapter,
+      className={cn('chapters-sidebar__chapter', {
+        'chapters-sidebar__chapter--current': isCurrentChapter,
       })}
       onClick={() => handleChapterClick(sectionId, chapter.chapterId)}
     >
@@ -283,22 +283,22 @@ const Chapter = ({
         </div>
       ) : (
         <div
-          className={cn("chapters-sidebar__chapter-number", {
-            "chapters-sidebar__chapter-number--current": isCurrentChapter,
+          className={cn('chapters-sidebar__chapter-number', {
+            'chapters-sidebar__chapter-number--current': isCurrentChapter,
           })}
         >
           {index + 1}
         </div>
       )}
       <span
-        className={cn("chapters-sidebar__chapter-title", {
-          "chapters-sidebar__chapter-title--completed": isCompleted,
-          "chapters-sidebar__chapter-title--current": isCurrentChapter,
+        className={cn('chapters-sidebar__chapter-title', {
+          'chapters-sidebar__chapter-title--completed': isCompleted,
+          'chapters-sidebar__chapter-title--current': isCurrentChapter,
         })}
       >
         {chapter.title}
       </span>
-      {chapter.type === "Text" && (
+      {chapter.type === 'Text' && (
         <FileText className="chapters-sidebar__text-icon" />
       )}
     </li>
