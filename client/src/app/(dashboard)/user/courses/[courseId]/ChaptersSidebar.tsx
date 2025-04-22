@@ -88,9 +88,9 @@ const Section = ({
   handleChapterClick,
   updateChapterProgress,
 }: {
-  section: any;
+  section: Section;
   index: number;
-  sectionProgress: any;
+  sectionProgress: SectionProgress | undefined;
   chapterId: string;
   courseId: string;
   expandedSections: string[];
@@ -103,7 +103,8 @@ const Section = ({
   ) => void;
 }) => {
   const completedChapters =
-    sectionProgress?.chapters.filter((c: any) => c.completed).length || 0;
+    sectionProgress?.chapters.filter((c: ChapterProgress) => c.completed)
+      .length || 0;
   const totalChapters = section.chapters.length;
   const isExpanded = expandedSections.includes(section.sectionTitle);
 

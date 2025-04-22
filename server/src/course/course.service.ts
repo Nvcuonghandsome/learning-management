@@ -448,7 +448,6 @@ export class CourseService {
   }
 
   async getUserCourseProgress(userId: string, courseId: string) {
-    console.log('userId111', userId, 'courseId', courseId);
     const courseProgress = await this.prisma.userCourseProgress.findFirst({
       where: {
         userId,

@@ -218,6 +218,19 @@ export const api = createApi({
         method: 'GET',
       }),
     }),
+    /*
+      S3 API
+    */
+    getUploadVideoUrl: build.mutation<
+      { uploadUrl: string; videoUrl: string },
+      { fileName: string; fileType: string }
+    >({
+      query: (body) => ({
+        url: '/s3/upload-video-url',
+        method: 'PUT',
+        body,
+      }),
+    }),
   }),
 });
 
@@ -240,4 +253,5 @@ export const {
   useCreatePaymentIntentMutation,
   useCreateTransactionMutation,
   useGetTransactionListQuery,
+  useGetUploadVideoUrlMutation,
 } = api;
