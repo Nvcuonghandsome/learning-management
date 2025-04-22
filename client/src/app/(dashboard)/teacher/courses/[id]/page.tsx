@@ -66,7 +66,7 @@ const CourseEditor = () => {
       });
       dispatch(setSections(course.sections || []));
     }
-  }, [course]);
+  }, [course, dispatch, methods]);
 
   const onSubmit = async (data: CourseFormData) => {
     try {

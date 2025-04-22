@@ -41,14 +41,14 @@ const SectionModal = () => {
         description: '',
       });
     }
-  }, [section]);
+  }, [section, methods]);
 
   const onClose = () => {
     dispatch(closeSectionModal());
   };
 
   const onSubmit = (data: SectionFormData) => {
-    const newSection: Section = {
+    const newSection: Omit<Section, 'order'> = {
       sectionId: section?.sectionId || `dragId-${uuidv4()}`,
       sectionTitle: data.title,
       sectionDescription: data.description,
@@ -56,12 +56,12 @@ const SectionModal = () => {
     };
 
     if (selectedSectionIndex === null) {
-      dispatch(addSection(newSection));
+      dispatch(addSection({ ...newSection, order: 0 }));
     } else {
       dispatch(
         editSection({
           index: selectedSectionIndex,
-          section: newSection,
+          section: { ...newSection, order: selectedSectionIndex },
         }),
       );
     }

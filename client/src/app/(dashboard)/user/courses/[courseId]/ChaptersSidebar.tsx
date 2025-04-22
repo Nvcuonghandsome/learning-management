@@ -159,8 +159,8 @@ const ProgressVisuals = ({
   completedChapters,
   totalChapters,
 }: {
-  section: any;
-  sectionProgress: any;
+  section: Section;
+  sectionProgress: SectionProgress | undefined;
   completedChapters: number;
   totalChapters: number;
 }) => {
@@ -168,9 +168,9 @@ const ProgressVisuals = ({
     <>
       <div className="chapters-sidebar__progress">
         <div className="chapters-sidebar__progress-bars">
-          {section.chapters.map((chapter: any) => {
+          {section.chapters.map((chapter: Chapter) => {
             const isCompleted = sectionProgress?.chapters.find(
-              (c: any) => c.chapterId === chapter.chapterId,
+              (c: ChapterProgress) => c.chapterId === chapter.chapterId,
             )?.completed;
             return (
               <div

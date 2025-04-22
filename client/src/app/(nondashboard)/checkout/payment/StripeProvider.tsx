@@ -49,7 +49,7 @@ const StripeProvider = ({ children }: { children: React.ReactNode }) => {
     };
 
     fetchPaymentIntent();
-  }, [course?.price]);
+  }, [course?.price, createPaymentIntent]);
 
   const options: StripeElementsOptions = {
     clientSecret,

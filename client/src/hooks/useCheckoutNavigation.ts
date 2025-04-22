@@ -19,14 +19,14 @@ export const useCheckoutNavigation = () => {
         { scroll: false },
       );
     },
-    [courseId, isSignedIn],
+    [courseId, isSignedIn, router],
   );
 
   useEffect(() => {
     if (isLoaded && !isSignedIn && checkoutStep > 1) {
       navigateToStep(1);
     }
-  }, [isLoaded, isSignedIn, checkoutStep]);
+  }, [isLoaded, isSignedIn, checkoutStep, navigateToStep]);
 
   return { checkoutStep, navigateToStep };
 };

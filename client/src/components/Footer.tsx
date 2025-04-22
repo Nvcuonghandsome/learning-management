@@ -1,9 +1,7 @@
 import Link from 'next/link';
 import React from 'react';
 
-type Props = {};
-
-const Footer = (props: Props) => {
+const Footer = () => {
   return (
     <div className="footer">
       <p className="">&copy; 2025 CuongNguyen. All Rights Reserved.</p>

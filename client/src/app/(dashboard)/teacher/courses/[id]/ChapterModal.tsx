@@ -57,7 +57,7 @@ const ChapterModal = () => {
         video: '',
       });
     }
-  }, [chapter]);
+  }, [chapter, methods]);
 
   const onClose = () => {
     dispatch(closeChapterModal());

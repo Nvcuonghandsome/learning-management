@@ -18,7 +18,7 @@ const Toolbar = ({ onSearch, onCategoryChange }: ToolbarProps) => {
     }, 5000);
 
     return () => clearTimeout(handler);
-  }, [searchTerm]);
+  }, [searchTerm, onSearch]);
 
   const handleSearch = (value: string) => {
     setSearchTerm(value);

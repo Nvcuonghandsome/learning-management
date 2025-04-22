@@ -37,7 +37,7 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
         <AppSidebar />
 
         <div className="dashboard__content">
-          {isCoursePage && <ChaptersSidebar />}
+          {courseId && <ChaptersSidebar />}
 
           <div
             className={cn(
