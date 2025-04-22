@@ -68,7 +68,6 @@ const TeacherCourseCard = ({
             <>
               <div>
                 <Button
-                  variant="outline"
                   className="course-card-teacher__edit-button"
                   onClick={() => onEdit(course.courseId)}
                 >
@@ -78,7 +77,6 @@ const TeacherCourseCard = ({
               </div>
               <div>
                 <Button
-                  variant="outline"
                   className="course-card-teacher__delete-button"
                   onClick={() => onDelete(course.courseId)}
                 >

@@ -67,7 +67,7 @@ const ChapterModal = () => {
     console.log('selectedSectionIndex', selectedSectionIndex);
     if (selectedSectionIndex === null) return;
 
-    const newChapter: Chapter = {
+    const newChapter: Omit<Chapter, 'order'> = {
       chapterId: chapter?.chapterId || `dragId-${uuidv4()}`,
       title: data.title,
       content: data.content,
@@ -77,14 +77,20 @@ const ChapterModal = () => {
 
     if (selectedChapterIndex === null) {
       dispatch(
-        addChapter({ sectionIndex: selectedSectionIndex, chapter: newChapter }),
+        addChapter({
+          sectionIndex: selectedSectionIndex,
+          chapter: { ...newChapter, order: 0 },
+        }),
       );
     } else {
       dispatch(
         editChapter({
           sectionIndex: selectedSectionIndex,
           chapterIndex: selectedChapterIndex,
-          chapter: newChapter,
+          chapter: {
+            ...newChapter,
+            order: selectedChapterIndex,
+          },
         }),
       );
     }

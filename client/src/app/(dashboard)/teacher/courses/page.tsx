@@ -35,7 +35,7 @@ const Courses = () => {
   });
 
   const handleEdit = (courseId: string) => {
-    router.push(`/teacher/courses/${courseId}`);
+    router.push(`/teacher/courses/${courseId}`, { scroll: false });
   };
 
   const handleDelete = async (courseId: string) => {
@@ -56,7 +56,7 @@ const Courses = () => {
       level: 'Beginner',
     }).unwrap();
 
-    router.push(`/teacher/courses/${result.courseId}`);
+    router.push(`/teacher/courses/${result.courseId}`, { scroll: false });
   };
 
   if (isLoading) return <Loading />;

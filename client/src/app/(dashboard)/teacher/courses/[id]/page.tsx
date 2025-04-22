@@ -201,7 +201,7 @@ const CourseEditor = () => {
       <div className="flex items-center gap-5 mb-5">
         <button
           className="flex items-center border border-customgreys-dirtyGrey rounded-lg p-2 gap-2"
-          onClick={() => router.push('/teacher/courses')}
+          onClick={() => router.push('/teacher/courses', { scroll: false })}
         >
           <ArrowLeft className="w-4 h-4" />
           <span>Back to Courses</span>

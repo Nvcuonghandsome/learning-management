@@ -13,6 +13,7 @@ const Footer = (props: Props) => {
             key={item}
             href={`${item.toLowerCase().replace(' ', '-')}`}
             className="footer__link"
+            scroll={false}
           />
         ))}
       </div>
