@@ -30,7 +30,7 @@ export class S3Service {
     };
 
     const uploadUrl = this.s3.getSignedUrl('putObject', params);
-    const videoUrl = `${this.config.get('CLOUDFRONT_DOMAIN')}/videos/${uniqueId}/${fileName}`;
+    const videoUrl = `${this.config.get('CLOUDFRONT_DOMAIN')}/${key}`;
     return {
       message: 'Upload URL generate successfully!',
       data: {

@@ -1,4 +1,11 @@
-import { IsEnum, IsNumber, IsOptional, IsString } from 'class-validator';
+import {
+  IsBoolean,
+  IsEnum,
+  IsNumber,
+  IsObject,
+  IsOptional,
+  IsString,
+} from 'class-validator';
 
 export class CreateCourseDto {
   @IsString()
@@ -146,4 +153,23 @@ export class UpdateChapterDto {
   @IsOptional()
   @IsString()
   video?: string;
+}
+
+class ProgressDataDto {
+  @IsString()
+  chapterProgressId: string;
+
+  @IsBoolean()
+  completed: boolean;
+}
+
+export class UpdateUserCourseProgressDto {
+  @IsString()
+  userId: string;
+
+  @IsString()
+  courseId: string;
+
+  @IsObject()
+  progressData: ProgressDataDto;
 }

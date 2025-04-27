@@ -62,23 +62,22 @@ export const useCourseProgressData = () => {
   ) => {
     if (!user) return;
 
-    const updatedSections = [
-      {
-        sectionId,
-        chapters: [
-          {
-            chapterId,
-            completed,
-          },
-        ],
-      },
-    ];
+    const sectionProgress = userProgress?.sections.find(
+      (section) => section.sectionId === sectionId,
+    );
+
+    const chapterProgress = sectionProgress?.chapters.find(
+      (chapter) => chapter.chapterId === chapterId,
+    );
+
+    if (!sectionProgress?.id || !chapterProgress?.id) return;
 
     updateProgress({
       userId: user.id,
       courseId: (courseId as string) ?? '',
       progressData: {
-        sections: updatedSections,
+        chapterProgressId: chapterProgress.id,
+        completed,
       },
     });
   };

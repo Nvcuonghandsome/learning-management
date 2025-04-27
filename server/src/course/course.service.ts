@@ -16,6 +16,7 @@ import {
   UpdateChapterDto,
   UpdateCourseDto,
   UpdateSectionDto,
+  UpdateUserCourseProgressDto,
 } from './dto/course.dto';
 import { ClerkService } from 'src/clerk/clerk.service';
 
@@ -473,6 +474,29 @@ export class CourseService {
 
     return {
       message: 'Retrieved user course progress successfully!',
+      data: courseProgress,
+    };
+  }
+
+  async updateUserCourseProgress(body: UpdateUserCourseProgressDto) {
+    const courseProgress = await this.prisma.userCourseProgress.findFirst({
+      where: {
+        userId: body.userId,
+        courseId: body.courseId,
+      },
+    });
+
+    if (!courseProgress) {
+      throw new NotFoundException('User course progress not found!');
+    }
+
+    await this.prisma.chapterProgress.update({
+      where: { id: body.progressData.chapterProgressId },
+      data: { completed: body.progressData.completed },
+    });
+
+    return {
+      message: 'Update user course progress successfully!',
       data: courseProgress,
     };
   }

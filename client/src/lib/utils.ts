@@ -288,7 +288,6 @@ export const customDataGridStyles = {
 
 export const uploadAllVideos = async (
   localSections: Section[],
-  courseId: string,
   getUploadVideoUrl: any,
 ) => {
   const updatedSections = localSections.map((section) => ({
@@ -303,12 +302,7 @@ export const uploadAllVideos = async (
       const chapter = updatedSections[i].chapters[j];
       if (chapter.video instanceof File && chapter.video.type === 'video/mp4') {
         try {
-          const updatedChapter = await uploadVideo(
-            chapter,
-            courseId,
-            updatedSections[i].sectionId,
-            getUploadVideoUrl,
-          );
+          const updatedChapter = await uploadVideo(chapter, getUploadVideoUrl);
           updatedSections[i].chapters[j] = updatedChapter;
         } catch (error) {
           console.error(
@@ -323,23 +317,16 @@ export const uploadAllVideos = async (
   return updatedSections;
 };
 
-async function uploadVideo(
-  chapter: Chapter,
-  courseId: string,
-  sectionId: string,
-  getUploadVideoUrl: any,
-) {
+export async function uploadVideo(chapter: Chapter, getUploadVideoUrl: any) {
   const file = chapter.video as File;
 
   try {
     const { uploadUrl, videoUrl } = await getUploadVideoUrl({
-      courseId,
-      sectionId,
-      chapterId: chapter.chapterId,
       fileName: file.name,
       fileType: file.type,
     }).unwrap();
 
+    // Upload video by presigned url on S3
     await fetch(uploadUrl, {
       method: 'PUT',
       headers: {
@@ -347,9 +334,6 @@ async function uploadVideo(
       },
       body: file,
     });
-    // toast.success(
-    //   `Video uploaded successfully for chapter ${chapter.chapterId}`
-    // );
 
     return { ...chapter, video: videoUrl };
   } catch (error) {

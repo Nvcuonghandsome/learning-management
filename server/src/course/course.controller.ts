@@ -16,6 +16,7 @@ import {
   UpdateChapterDto,
   UpdateCourseDto,
   UpdateSectionDto,
+  UpdateUserCourseProgressDto,
 } from './dto/course.dto';
 
 @Controller('courses')
@@ -102,7 +103,11 @@ export class CourseController {
     @Query('userId') userId: string,
     @Query('courseId') courseId: string,
   ) {
-    console.log('userId000', userId, 'courseId', courseId);
     return this.courseService.getUserCourseProgress(userId, courseId);
+  }
+
+  @Put('/progress/user-course-progress')
+  updateUserCourseProgress(@Body() body: UpdateUserCourseProgressDto) {
+    return this.courseService.updateUserCourseProgress(body);
   }
 }

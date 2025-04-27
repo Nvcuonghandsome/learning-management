@@ -113,11 +113,13 @@ declare global {
   }
 
   interface ChapterProgress {
+    id: string;
     chapterId: string;
     completed: boolean;
   }
 
   interface SectionProgress {
+    id: string;
     sectionId: string;
     chapters: ChapterProgress[];
   }

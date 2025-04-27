@@ -6,7 +6,7 @@ import Header from '@/components/Header';
 import { Button } from '@/components/ui/button';
 import { Form } from '@/components/ui/form';
 import { courseSchema } from '@/lib/schemas';
-import { centsToDollars } from '@/lib/utils';
+import { centsToDollars, uploadVideo } from '@/lib/utils';
 import { openSectionModal, setSections } from '@/state';
 import {
   useGetCourseQuery,
@@ -17,6 +17,7 @@ import {
   useCreateChapterMutation,
   useDeleteSectionMutation,
   useDeleteChapterMutation,
+  useGetUploadVideoUrlMutation,
 } from '@/state/api';
 import { useAppDispatch, useAppSelector } from '@/state/redux';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -40,6 +41,7 @@ const CourseEditor = () => {
   const [createChapter] = useCreateChapterMutation();
   const [deleteSection] = useDeleteSectionMutation();
   const [deleteChapter] = useDeleteChapterMutation();
+  const [getUploadVideo] = useGetUploadVideoUrlMutation();
 
   const dispatch = useAppDispatch();
   const { sections } = useAppSelector((state) => state.global.courseEditor);
@@ -141,25 +143,65 @@ const CourseEditor = () => {
             chapterIndex++
           ) {
             const chapter = section.chapters[chapterIndex];
+            let videoUrl = '';
             if (chapter.chapterId && !chapter.chapterId.includes('dragId')) {
+              if (
+                chapter.video instanceof File &&
+                chapter.video.type === 'video/mp4'
+              ) {
+                try {
+                  const { video } = await uploadVideo(chapter, getUploadVideo);
+                  videoUrl = video;
+                } catch (error) {
+                  console.error(
+                    `Failed to upload video for chapter ${chapter.chapterId}:`,
+                    error,
+                  );
+                }
+              }
               // Update existing chapter with order information
-              await updateChapter({
+              let updatedChapter: Chapter = {
                 chapterId: chapter.chapterId,
                 title: chapter.title,
                 content: chapter.content,
                 type: chapter.type,
                 sectionId: section.sectionId,
                 order: chapterIndex,
-              }).unwrap();
+              };
+              if (videoUrl) {
+                updatedChapter = { ...updatedChapter, video: videoUrl };
+              }
+              await updateChapter(updatedChapter).unwrap();
             } else {
               // Create new chapter with order information
-              await createChapter({
+              let videoUrl = '';
+              if (
+                chapter.video instanceof File &&
+                chapter.video.type === 'video/mp4'
+              ) {
+                try {
+                  const { video } = await uploadVideo(chapter, getUploadVideo);
+                  videoUrl = video;
+                  // updatedSections[i].chapters[j] = updatedChapter;
+                } catch (error) {
+                  console.error(
+                    `Failed to upload video for chapter ${chapter.chapterId}:`,
+                    error,
+                  );
+                }
+              }
+              let updatedChapter: Chapter = {
+                chapterId: chapter.chapterId,
                 title: chapter.title,
                 content: chapter.content,
                 type: chapter.type,
                 sectionId: section.sectionId,
                 order: chapterIndex,
-              }).unwrap();
+              };
+              if (videoUrl) {
+                updatedChapter = { ...updatedChapter, video: videoUrl };
+              }
+              await updateChapter(updatedChapter).unwrap();
             }
           }
         } else {
@@ -178,13 +220,34 @@ const CourseEditor = () => {
             chapterIndex++
           ) {
             const chapter = section.chapters[chapterIndex];
-            await createChapter({
+            let videoUrl = '';
+            if (
+              chapter.video instanceof File &&
+              chapter.video.type === 'video/mp4'
+            ) {
+              try {
+                const { video } = await uploadVideo(chapter, getUploadVideo);
+                videoUrl = video;
+                // updatedSections[i].chapters[j] = updatedChapter;
+              } catch (error) {
+                console.error(
+                  `Failed to upload video for chapter ${chapter.chapterId}:`,
+                  error,
+                );
+              }
+            }
+            let updatedChapter: Chapter = {
+              chapterId: chapter.chapterId,
               title: chapter.title,
               content: chapter.content,
               type: chapter.type,
-              sectionId: newSection.sectionId,
+              sectionId: section.sectionId,
               order: chapterIndex,
-            }).unwrap();
+            };
+            if (videoUrl) {
+              updatedChapter = { ...updatedChapter, video: videoUrl };
+            }
+            await updateChapter(updatedChapter).unwrap();
           }
         }
       }

@@ -12,6 +12,7 @@ async function bootstrap() {
   app.enableCors({
     origin: [
       'http://localhost:3000',
+      'https://learning-management-nu.vercel.app',
       // 'https://main.d3hokgerfetl68.amplifyapp.com',
     ],
     credentials: true, // Allow cookies/auth headers if needed
